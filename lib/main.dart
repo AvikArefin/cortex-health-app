@@ -20,6 +20,7 @@ class CortexHealthApp extends StatelessWidget {
       home: const SplashScreen(),
       routes: {
         '/home': (context) => const StartPage(),
+        // '/home': (context) => QRCode(),
       },
     );
   }
