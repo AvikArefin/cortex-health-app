@@ -1,9 +1,8 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class CircleBoundary extends StatefulWidget {
-  int cx, cy, r;
-  CircleBoundary(
+  final int cx, cy, r;
+  const CircleBoundary(
       {super.key, required this.cx, required this.cy, required this.r});
 
   @override
@@ -16,11 +15,6 @@ class _CircleBoundaryState extends State<CircleBoundary> {
     return Center(
       child: CustomPaint(
         painter: BoxBounderyPainter(widget.cx, widget.cy, widget.r),
-        // child: Container(
-        //   height: 100,
-        //   width: 100,
-        //   color: Colors.deepOrange,
-        // ),
       ),
     );
   }
@@ -33,7 +27,7 @@ class BoxBounderyPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // print('circle rendered');
+    // debugPrint('circle rendered');
     var paint1 = Paint()
       ..strokeWidth = 5.0
       ..color = Colors.green

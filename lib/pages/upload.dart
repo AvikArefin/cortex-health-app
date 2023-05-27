@@ -19,10 +19,10 @@ class UploadPage extends StatefulWidget {
 
 class UploadPageState extends State<UploadPage> {
   File? image;
-  int? cx, cy, r; // ADDED
+  int? cx, cy, r;
   String? resultString, resultString2;
-  String? OutputName;
-  String? OutputConfidence;
+  String? outputName;
+  String? outputConfidence;
 
   Future<void> uploadImage(ImageSource imageSource) async {
     var pickedImage = await ImagePicker().pickImage(source: imageSource);
@@ -48,13 +48,11 @@ class UploadPageState extends State<UploadPage> {
           // Handle success
           debugPrint('Image uploaded successfully');
 
-          // ADDED
-          // --------------------------------------------------
           Map<String, dynamic> detectionResult =
               jsonDecode(await response.stream.bytesToString());
           debugPrint(detectionResult.toString());
-          OutputName = detectionResult['predicted-class'];
-          OutputConfidence =
+          outputName = detectionResult['predicted-class'];
+          outputConfidence =
               (100.0 * detectionResult['confidence']).toStringAsFixed(2);
 
           // Check if 'box' element exists
@@ -72,11 +70,11 @@ class UploadPageState extends State<UploadPage> {
               r = box['radius'];
               debugPrint('cx: $cx, cy: $cy, r: $r');
             } else {
-              print(
+              debugPrint(
                   'One or more required keys are missing in the "box" element.');
             }
           } else {
-            print('The "box" element is empty or missing.');
+            debugPrint('The "box" element is empty or missing.');
           }
 
           setState(() {
@@ -84,7 +82,6 @@ class UploadPageState extends State<UploadPage> {
           });
 
           debugPrint(await response.stream.bytesToString());
-          // -------------------------------------------------
         } else {
           // Handle error
           debugPrint('Image upload failed with status ${response.statusCode}');
@@ -136,7 +133,6 @@ class UploadPageState extends State<UploadPage> {
                       ),
                       if (cx != null && cy != null && r != null)
                         CircleBoundary(cx: cx!, cy: cy!, r: r!)
-                      // CircleBoundary(cx: -10, cy: -10, r: 20)
                     ],
                   ),
           ),
@@ -144,12 +140,11 @@ class UploadPageState extends State<UploadPage> {
             '${widget.modelName} Detection Model',
             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
-          if (OutputName != null) ...[
+          if (outputName != null) ...[
             Text(
-              'Type: ${OutputName!} \nConfidence: ${OutputConfidence!}%\nFound at: ${resultString!}',
+              'Type: ${outputName!} \nConfidence: ${outputConfidence!}%\nFound at: ${resultString!}',
               style: const TextStyle(fontSize: 18),
             )
-            // ? if ()
           ] else ...[
             const CircularProgressIndicator()
           ],
@@ -163,7 +158,7 @@ class UploadPageState extends State<UploadPage> {
                   label: const Text('Camera Upload'),
                   onPressed: () {
                     setState(() {
-                      OutputName = null;
+                      outputName = null;
                       cx = 0;
                       cy = 0;
                       r = 0;
@@ -177,7 +172,7 @@ class UploadPageState extends State<UploadPage> {
                   label: const Text('Upload Photo'),
                   onPressed: () {
                     setState(() {
-                      OutputName = null;
+                      outputName = null;
                       cx = 0;
                       cy = 0;
                       r = 0;

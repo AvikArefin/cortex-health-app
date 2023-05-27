@@ -53,8 +53,8 @@ class _StartPageState extends State<StartPage> {
           Expanded(
             child: Container(
               margin: const EdgeInsets.only(top: 20),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(25),
                     topRight: Radius.circular(25)),
                 color: Colors.white,
@@ -96,7 +96,7 @@ class _StartPageState extends State<StartPage> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
