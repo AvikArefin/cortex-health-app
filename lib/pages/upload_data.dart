@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:cortex/urls/urlstring.dart';
 
 // QR Code Result Page
 class QRCodeResultPage extends StatelessWidget {
@@ -44,25 +46,32 @@ class QRCodeResultPage extends StatelessWidget {
               },
             ),
           ),
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Column(
-                children: [
-                  const Center(
-                    child: Text(
-                      'Paitent Information',
-                      style: TextStyle(fontSize: 24),
+          body: SingleChildScrollView(
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: Column(
+                  children: [
+                    const Center(
+                      child: Text(
+                        'Paitent Information',
+                        style: TextStyle(fontSize: 24),
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-                    child: Table(
-                      border: TableBorder.all(),
-                      children: tableRows,
+                    Container(
+                      margin:
+                          const EdgeInsets.only(top: 20, left: 10, right: 10),
+                      child: Table(
+                        border: TableBorder.all(),
+                        children: tableRows,
+                      ),
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: 20,
+                    ),
+                    _buildSubmitButton(jsonMap)
+                  ],
+                ),
               ),
             ),
           ),
@@ -91,5 +100,45 @@ class QRCodeResultPage extends StatelessWidget {
         ),
       );
     }
+  }
+
+  Widget _buildSubmitButton(final jsonData) {
+    return ElevatedButton(
+      onPressed: () {
+        // Handle button press
+        _submitJsonData(jsonData);
+      },
+      child: Text('Submit'),
+    );
+  }
+
+  Future<void> _submitJsonData(final jsonData) async {
+    final url = uploadAPIUrl; // Replace with your API endpoint
+
+    // // Prepare the JSON data
+    // final jsonData = {
+    //   'name': 'John Doe',
+    //   'age': 30,
+    //   'email': 'johndoe@example.com',
+    //   // Add more data fields as needed
+    // };
+    debugPrint('jsonData: $jsonData');
+    // try {
+    //   final response = await http.post(
+    //     Uri.parse(url),
+    //     headers: {'Content-Type': 'application/json'},
+    //     body: jsonData,
+    //   );
+
+    //   if (response.statusCode == 200) {
+    //     // API request successful
+    //     print('API request successful');
+    //   } else {
+    //     // API request failed
+    //     print('API request failed');
+    //   }
+    // } catch (error) {
+    //   print('Error: $error');
+    // }
   }
 }
