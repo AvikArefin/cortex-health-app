@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:cortex/urls/urlstring.dart';
+import 'package:cortex/components/category_selection.dart';
 
 // QR Code Result Page
 class QRCodeResultPage extends StatelessWidget {
@@ -66,7 +67,11 @@ class QRCodeResultPage extends StatelessWidget {
                         children: tableRows,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    DiseaseSelect(),
+                    const SizedBox(
                       height: 20,
                     ),
                     _buildSubmitButton(jsonMap)
@@ -108,37 +113,27 @@ class QRCodeResultPage extends StatelessWidget {
         // Handle button press
         _submitJsonData(jsonData);
       },
-      child: Text('Submit'),
+      child: const Text('Submit'),
     );
   }
 
   Future<void> _submitJsonData(final jsonData) async {
     final url = uploadAPIUrl; // Replace with your API endpoint
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(jsonData),
+      );
+      debugPrint('response: $response');
 
-    // // Prepare the JSON data
-    // final jsonData = {
-    //   'name': 'John Doe',
-    //   'age': 30,
-    //   'email': 'johndoe@example.com',
-    //   // Add more data fields as needed
-    // };
-    debugPrint('jsonData: $jsonData');
-    // try {
-    //   final response = await http.post(
-    //     Uri.parse(url),
-    //     headers: {'Content-Type': 'application/json'},
-    //     body: jsonData,
-    //   );
-
-    //   if (response.statusCode == 200) {
-    //     // API request successful
-    //     print('API request successful');
-    //   } else {
-    //     // API request failed
-    //     print('API request failed');
-    //   }
-    // } catch (error) {
-    //   print('Error: $error');
-    // }
+      if (response.statusCode == 200) {
+        debugPrint('API request successful');
+      } else {
+        debugPrint('API request failed');
+      }
+    } catch (error) {
+      debugPrint('Error: $error');
+    }
   }
 }
