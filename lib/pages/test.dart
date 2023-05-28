@@ -31,14 +31,14 @@ class _CountryCityWidgetState extends State<CountryCityWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Select a Country',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               DropdownButton<String>(
                 value: selectedCountry,
-                hint: Text('Select a country'),
+                hint: const Text('Select a country'),
                 onChanged: (String? value) {
                   setState(() {
                     selectedCountry = value;
@@ -56,19 +56,19 @@ class _CountryCityWidgetState extends State<CountryCityWidget> {
             ],
           ),
         ),
-        SizedBox(width: 20),
+        const SizedBox(width: 20),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Select a City',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               DropdownButton<String>(
                 value: selectedCity,
-                hint: Text('Select a city'),
+                hint: const Text('Select a city'),
                 onChanged: (String? value) {
                   setState(() {
                     selectedCity = value;

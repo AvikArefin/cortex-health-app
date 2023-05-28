@@ -53,11 +53,6 @@ class _DiseaseSelectState extends State<DiseaseSelect> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            // const Text(
-            //   'Select Disease',
-            //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            // ),
-            // const SizedBox(height: 10),
             DropdownButton<String>(
               value: selectedDisease,
               hint: const Text('Select a Disease'),
@@ -79,12 +74,6 @@ class _DiseaseSelectState extends State<DiseaseSelect> {
             selectedDisease != null
                 ? Column(
                     children: [
-                      // Text(
-                      //   'Select a Type in $selectedDisease:',
-                      //   style: const TextStyle(
-                      //       fontSize: 18, fontWeight: FontWeight.bold),
-                      // ),
-                      // const SizedBox(height: 10),
                       DropdownButton<String>(
                         value: selectedType,
                         hint: const Text('Select a Type'),
@@ -103,22 +92,10 @@ class _DiseaseSelectState extends State<DiseaseSelect> {
                     ],
                   )
                 : Container(),
-            const SizedBox(height: 20),
-            selectedDisease != null && selectedType != null
-                ? const Column(
-                    children: [
-                      // Text(
-                      //   'Selected Country: $selectedDisease',
-                      //   style: const TextStyle(fontSize: 18),
-                      // ),
-                      SizedBox(height: 10),
-                      // Text(
-                      //   'Selected City: $selectedType',
-                      //   style: const TextStyle(fontSize: 18),
-                      // ),
-                    ],
-                  )
-                : Container(),
+            // const SizedBox(height: 20),
+            // selectedDisease != null && selectedType != null
+            //     ? const SizedBox(height: 10)
+            //     : Container(),
           ],
         ),
       ],
