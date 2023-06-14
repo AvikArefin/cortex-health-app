@@ -5,15 +5,31 @@ import 'package:cortex/urls/urlstring.dart';
 import 'package:cortex/components/category_selection.dart';
 
 // QR Code Result Page
-class QRCodeResultPage extends StatelessWidget {
-  final String qrCodeData;
+typedef void SelectionCallback(String value1, String value2);
 
-  const QRCodeResultPage(this.qrCodeData);
+class QRCodeResultPage extends StatefulWidget {
+  final String qrCodeData;
+  const QRCodeResultPage(this.qrCodeData, {super.key});
+
+  @override
+  State<QRCodeResultPage> createState() => _QRCodeResultPageState();
+}
+
+class _QRCodeResultPageState extends State<QRCodeResultPage> {
+  String disease = '', type = '';
+
+  void handleSelectionChanged(String selectedDisease, String selectedType) {
+    // debugPrint('Selected Disease: $selectedDisease');
+    // debugPrint('Selected Type: $selectedType');
+    // Perform any other actions based on the selected values
+    disease = selectedDisease;
+    type = selectedType;
+  }
 
   @override
   Widget build(BuildContext context) {
     try {
-      final jsonMap = jsonDecode(qrCodeData);
+      final jsonMap = jsonDecode(widget.qrCodeData);
       if (jsonMap != null && jsonMap is Map) {
         final tableRows = <TableRow>[];
         jsonMap.forEach((key, value) {
@@ -70,7 +86,9 @@ class QRCodeResultPage extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    DiseaseSelect(),
+                    DiseaseSelect(
+                      buildSubmitSection: handleSelectionChanged,
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -110,7 +128,8 @@ class QRCodeResultPage extends StatelessWidget {
   Widget _buildSubmitButton(final jsonData) {
     return ElevatedButton(
       onPressed: () {
-        // Handle button press
+        jsonData['disease'] = disease;
+        jsonData['type'] = type;
         _submitJsonData(jsonData);
       },
       child: const Text('Submit'),
@@ -119,21 +138,21 @@ class QRCodeResultPage extends StatelessWidget {
 
   Future<void> _submitJsonData(final jsonData) async {
     final url = uploadAPIUrl; // Replace with your API endpoint
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(jsonData),
-      );
-      debugPrint('response: $response');
+    // try {
+    //   final response = await http.post(
+    //     Uri.parse(url),
+    //     headers: {'Content-Type': 'application/json'},
+    //     body: jsonEncode(jsonData),
+    //   );
+    debugPrint('response: $jsonData');
 
-      if (response.statusCode == 200) {
-        debugPrint('API request successful');
-      } else {
-        debugPrint('API request failed');
-      }
-    } catch (error) {
-      debugPrint('Error: $error');
-    }
+    //   if (response.statusCode == 200) {
+    //     debugPrint('API request successful');
+    //   } else {
+    //     debugPrint('API request failed');
+    //   }
+    // } catch (error) {
+    //   debugPrint('Error: $error');
+    // }
   }
 }

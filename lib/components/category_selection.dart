@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
 class DiseaseSelect extends StatefulWidget {
+  // final VoidCallback buildSubmitSection;
+  final Function(String, String) buildSubmitSection;
+  const DiseaseSelect({super.key, required this.buildSubmitSection});
+
   @override
-  _DiseaseSelectState createState() => _DiseaseSelectState();
+  DiseaseSelectState createState() => DiseaseSelectState();
 }
 
-class _DiseaseSelectState extends State<DiseaseSelect> {
+class DiseaseSelectState extends State<DiseaseSelect> {
   String? selectedDisease;
   String? selectedType;
   List<String> diseases = [
@@ -61,7 +65,9 @@ class _DiseaseSelectState extends State<DiseaseSelect> {
                   selectedDisease = value;
                   selectedType =
                       null; // Reset selected city when changing country
+                  // debugPrint(value!);
                 });
+                widget.buildSubmitSection(selectedDisease!, selectedType!);
               },
               items: diseases.map((String disease) {
                 return DropdownMenuItem<String>(
@@ -81,6 +87,8 @@ class _DiseaseSelectState extends State<DiseaseSelect> {
                           setState(() {
                             selectedType = value;
                           });
+                          widget.buildSubmitSection(
+                              selectedDisease!, selectedType!);
                         },
                         items: types[selectedDisease!]!.map((String type) {
                           return DropdownMenuItem<String>(
@@ -92,12 +100,24 @@ class _DiseaseSelectState extends State<DiseaseSelect> {
                     ],
                   )
                 : Container(),
-            // const SizedBox(height: 20),
-            // selectedDisease != null && selectedType != null
-            //     ? const SizedBox(height: 10)
-            //     : Container(),
           ],
         ),
+        const SizedBox(height: 20),
+        selectedDisease != null && selectedType != null
+            ? Column(
+                children: [
+                  Text(
+                    'Selected Disease: $selectedDisease',
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Selected Type: $selectedType',
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ],
+              )
+            : Container(),
       ],
     );
   }
