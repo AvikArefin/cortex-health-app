@@ -1,8 +1,14 @@
+// ignore_for_file: prefer_const_constructors
+
+// import 'package:cortex/QR.dart';
 import 'package:cortex/pages/about.dart';
 import 'package:cortex/pages/upload.dart';
+import 'package:cortex/pages/upload_data.dart';
 import 'package:cortex/urls/urlstring.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
@@ -12,7 +18,39 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
+  String _scanBarcode = 'Unknown';
+
   @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> scanQR() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.QR);
+      // print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+      if (_scanBarcode != '-1') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => QRCodeResultPage(_scanBarcode),
+          ),
+        );
+      }
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -35,10 +73,10 @@ class _StartPageState extends State<StartPage> {
           Container(
             padding: const EdgeInsets.only(left: 20),
             height: 180,
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
-              children: const [
+              children: [
                 Text(
                   'Cortex Health',
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -100,7 +138,9 @@ class _StartPageState extends State<StartPage> {
                     height: 10,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      scanQR();
+                    },
                     child: const Text('Upload Data'),
                   )
                 ],
